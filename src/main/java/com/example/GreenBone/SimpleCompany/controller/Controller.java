@@ -24,12 +24,13 @@ import com.example.GreenBone.SimpleCompany.model.Assets;
 import com.example.GreenBone.SimpleCompany.respository.Repository;
 import com.example.GreenBone.SimpleCompany.exception.ResourceNotFoundException;
 import com.example.GreenBone.SimpleCompany.model.Assets;
-import com.example.GreenBone.SimpleCompany.respository.;
+import com.example.GreenBone.SimpleCompany.Respository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,32 +53,32 @@ public class Controller {
    *
    * @return the list
    */
-  @GetMapping("/users")
-  public List<Assets> getAllUsers() {
+  @GetMapping("/assets")
+  public List<Assets> getAllAssets() {
     return userRepository.findAll();
   }
 
   /**
-   * Gets users by id.
+   * Gets assets by id.
    *
-   * @param userId the user id
+   * @param assetsid the user id
    * @return the users by id
    * @throws \ the resource not found exception
    */
-  @GetMapping("/users/{id}")
+  @GetMapping("/asset/{id}")
   public ResponseEntity<Assets> getUsersById(@PathVariable(value = "id") Long userId)
       throws ResourceNotFoundException {
     Assets assets =
-        userRepository
+        Repository
             .findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
     return ResponseEntity.ok().body(assets);
   }
 
   /**
-   * Create user user.
+   * Create Asset or user.
    *
-   * @param user the user
+   * @param asset or  the user
    * @return the user
    */
   @PostMapping("/users")
@@ -112,18 +113,18 @@ public class Controller {
   }
 
   /**
-   * Delete user map.
+   * Delete asset map.
    *
-   * @param userId the user id
+   * @param assetid the user id
    * @return the map
    * @throws Exception the exception
    */
-  @DeleteMapping("/user/{id}")
-  public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long userId) throws Exception {
+  @DeleteMapping("/asset/{id}")
+  public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long assetid) throws Exception {
     Assets assets =
         userRepository
-            .findById(userId)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
+            .findById(assetid)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + assetid));
 
     userRepository.delete(assets);
     Map<String, Boolean> response = new HashMap<>();
