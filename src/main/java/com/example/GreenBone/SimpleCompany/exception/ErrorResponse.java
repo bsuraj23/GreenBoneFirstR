@@ -18,7 +18,7 @@
  *
  */
 
-package exception;
+package com.example.GreenBone.SimpleCompany.exception;
 
 import java.util.Date;
 

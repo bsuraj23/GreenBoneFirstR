@@ -18,16 +18,18 @@
  *
  */
 
-package controller;
+package com.example.GreenBone.SimpleCompany.controller;
 
-import com.staxrt.tutorial.exception.ResourceNotFoundException;
-import com.staxrt.tutorial.model.User;
-import com.staxrt.tutorial.repository.UserRepository;
+import com.example.GreenBone.SimpleCompany.model.Assets;
+import com.example.GreenBone.SimpleCompany.respository.Repository;
+import com.example.GreenBone.SimpleCompany.exception.ResourceNotFoundException;
+import com.example.GreenBone.SimpleCompany.model.Assets;
+import com.example.GreenBone.SimpleCompany.respository.;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +42,10 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/v1")
-public class UserController {
+public class Controller {
 
   @Autowired
-  private UserRepository userRepository;
+  private Repository userRepository;
 
   /**
    * Get all users list.
@@ -51,7 +53,7 @@ public class UserController {
    * @return the list
    */
   @GetMapping("/users")
-  public List<User> getAllUsers() {
+  public List<Assets> getAllUsers() {
     return userRepository.findAll();
   }
 
@@ -60,16 +62,16 @@ public class UserController {
    *
    * @param userId the user id
    * @return the users by id
-   * @throws ResourceNotFoundException the resource not found exception
+   * @throws \ the resource not found exception
    */
   @GetMapping("/users/{id}")
-  public ResponseEntity<User> getUsersById(@PathVariable(value = "id") Long userId)
+  public ResponseEntity<Assets> getUsersById(@PathVariable(value = "id") Long userId)
       throws ResourceNotFoundException {
-    User user =
+    Assets assets =
         userRepository
             .findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
-    return ResponseEntity.ok().body(user);
+    return ResponseEntity.ok().body(assets);
   }
 
   /**
@@ -79,7 +81,7 @@ public class UserController {
    * @return the user
    */
   @PostMapping("/users")
-  public User createUser(@Valid @RequestBody User user) {
+  public Assets createUser(@Valid @RequestBody Assets asset) {
     return userRepository.save(user);
   }
 
@@ -92,21 +94,21 @@ public class UserController {
    * @throws ResourceNotFoundException the resource not found exception
    */
   @PutMapping("/users/{id}")
-  public ResponseEntity<User> updateUser(
-      @PathVariable(value = "id") Long userId, @Valid @RequestBody User userDetails)
+  public ResponseEntity<Assets> updateUser(
+      @PathVariable(value = "id") Long userId, @Valid @RequestBody Assets userDetails)
       throws ResourceNotFoundException {
 
-    User user =
+    Assets user =
         userRepository
             .findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
 
-    user.setEmail(userDetails.getEmail());
-    user.setLastName(userDetails.getLastName());
-    user.setFirstName(userDetails.getFirstName());
-    user.setUpdatedAt(new Date());
-    final User updatedUser = userRepository.save(user);
-    return ResponseEntity.ok(updatedUser);
+//    user.setEmail(userDetails.getEmail());
+//    user.setLastName(userDetails.getLastName());
+//    user.setFirstName(userDetails.getFirstName());
+//    user.setUpdatedAt(new Date());
+//    final User updatedUser = userRepository.save(user);
+//    return ResponseEntity.ok(updatedUser);
   }
 
   /**
@@ -118,12 +120,12 @@ public class UserController {
    */
   @DeleteMapping("/user/{id}")
   public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long userId) throws Exception {
-    User user =
+    Assets assets =
         userRepository
             .findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
 
-    userRepository.delete(user);
+    userRepository.delete(assets);
     Map<String, Boolean> response = new HashMap<>();
     response.put("deleted", Boolean.TRUE);
     return response;
