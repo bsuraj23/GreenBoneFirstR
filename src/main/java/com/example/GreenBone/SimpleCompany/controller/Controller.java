@@ -24,7 +24,8 @@ import com.example.GreenBone.SimpleCompany.model.Assets;
 import com.example.GreenBone.SimpleCompany.respository.Repository;
 import com.example.GreenBone.SimpleCompany.exception.ResourceNotFoundException;
 import com.example.GreenBone.SimpleCompany.model.Assets;
-import com.example.GreenBone.SimpleCompany.Respository;
+import com.example.GreenBone.SimpleCompany.respository.Repository;
+import com.example.GreenBone.SimpleCompany.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,99 +37,54 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The type User controller.
- *
- * @author Givantha Kalansuriya
- */
 @RestController
 @RequestMapping("/api/v1")
 public class Controller {
 
   @Autowired
   private Repository userRepository;
+  @Autowired
+  private EmployeeService employeeService;
 
-  /**
-   * Get all users list.
-   *
-   * @return the list
-   */
-  @GetMapping("/assets")
-  public List<Assets> getAllAssets() {
-    return userRepository.findAll();
+
+
+  @GetMapping
+  public Object getEmployeeByName(@RequestParam(required = false) String firstName) {
+    if (firstName == null)
+      return employeeService.showEmployees();
+    return employeeService.findByFirstName(firstName);
   }
 
-  /**
-   * Gets assets by id.
-   *
-   * @param assetsid the user id
-   * @return the users by id
-   * @throws \ the resource not found exception
-   */
-  @GetMapping("/asset/{id}")
-  public ResponseEntity<Assets> getUsersById(@PathVariable(value = "id") Long userId)
-      throws ResourceNotFoundException {
-    Assets assets =
-        Repository
-            .findById(userId)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
-    return ResponseEntity.ok().body(assets);
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public Employee addEmployee(@RequestBody Employee emp) {
+    emp.setEmployeeId(0);
+    employeeService.saveEmployee(emp);
+    return emp;
   }
 
-  /**
-   * Create Asset or user.
-   *
-   * @param asset or  the user
-   * @return the user
-   */
-  @PostMapping("/users")
-  public Assets createUser(@Valid @RequestBody Assets asset) {
-    return userRepository.save(user);
+  @GetMapping("/{employeeId}")
+  public Employee getEmployeeById(@PathVariable Integer employeeId) {
+    Employee emp = employeeService.findEmployeeById(employeeId);
+    return emp;
   }
 
-  /**
-   * Update user response entity.
-   *
-   * @param userId the user id
-   * @param userDetails the user details
-   * @return the response entity
-   * @throws ResourceNotFoundException the resource not found exception
-   */
-  @PutMapping("/users/{id}")
-  public ResponseEntity<Assets> updateUser(
-      @PathVariable(value = "id") Long userId, @Valid @RequestBody Assets userDetails)
-      throws ResourceNotFoundException {
-
-    Assets user =
-        userRepository
-            .findById(userId)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
-
-//    user.setEmail(userDetails.getEmail());
-//    user.setLastName(userDetails.getLastName());
-//    user.setFirstName(userDetails.getFirstName());
-//    user.setUpdatedAt(new Date());
-//    final User updatedUser = userRepository.save(user);
-//    return ResponseEntity.ok(updatedUser);
+  @PutMapping
+  public Employee updateEmployee(@RequestBody Employee emp) {
+    employeeService.saveEmployee(emp);
+    return emp;
   }
 
-  /**
-   * Delete asset map.
-   *
-   * @param assetid the user id
-   * @return the map
-   * @throws Exception the exception
-   */
-  @DeleteMapping("/asset/{id}")
-  public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long assetid) throws Exception {
-    Assets assets =
-        userRepository
-            .findById(assetid)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + assetid));
+  @DeleteMapping("/{employeeId}")
+  public String deleteEmployee(@PathVariable Integer employeeId) {
+    Employee emp = employeeService.findEmployeeById(employeeId);
+    employeeService.deleteEmployee(emp);
+    return "Deleted employee ID - " + employeeId;
+  }
 
-    userRepository.delete(assets);
-    Map<String, Boolean> response = new HashMap<>();
-    response.put("deleted", Boolean.TRUE);
-    return response;
+  @GetMapping("/sort")
+  public List<Employee> getEmployeesSortedByFirstName(Direction direction) {
+    List<Employee> emp = employeeService.sortByFirstName(direction);
+    return emp;
   }
 }
