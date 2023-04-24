@@ -1,7 +1,7 @@
 package com.example.GreenBone.SimpleCompany.controller;
 
-import employeeManagement.entity.Employee;
-import employeeManagement.service.EmployeeService;
+import com.example.GreenBone.SimpleCompany.model.Employee;
+import com.example.GreenBone.SimpleCompany.service.EmployeeService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import java.util.List;
 public class EmployeeController {
 
 	@Autowired
-	private EmployeeService employeeService;
+	private EmployeeService2 employeeService;
 
 	@GetMapping
 	public Object getEmployeeByName(@RequestParam(required = false) String firstName) {

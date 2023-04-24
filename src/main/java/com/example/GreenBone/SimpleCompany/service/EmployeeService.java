@@ -1,43 +1,21 @@
 package com.example.GreenBone.SimpleCompany.service;
 
-import com.example.GreenBone.SimpleCompany.exception.ResourceNotFoundException;
-import com.example.GreenBone.SimpleCompany.model.Employee;
-import com.example.GreenBone.SimpleCompany.respository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import employeeManagement.entity.Employee;
+import org.springframework.data.domain.Sort.Direction;
 
 import java.util.List;
 
-@Service
-public class EmployeeService {
-    @Autowired
-    private EmployeeRepository employeeRepository;
+public interface EmployeeService {
 
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
-    }
+	public List<Employee> showEmployees();
 
-    public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
-    }
+	public void saveEmployee(Employee emp);
 
-    public Employee createEmployee(Employee employee) {
-        return employeeRepository.save(employee);
-    }
+	public Employee findEmployeeById(Integer employeeId);
 
-    public Employee updateEmployee(Long id, Employee employeeDetails) {
-        Employee employee = getEmployeeById(id);
+	public void deleteEmployee(Employee emp);
 
-        employee.setName(employeeDetails.getName());
-        employee.setEmail(employeeDetails.getEmail());
-        employee.setAddress(employeeDetails.getAddress());
-        employee.setDateOfBirth(employeeDetails.getDateOfBirth());
+	public Employee findByFirstName(String firstName);
 
-        return employeeRepository.save(employee);
-    }
-
-    public void deleteEmployee(Long id) {
-        employeeRepository.deleteById(id);
-    }
+	public List<Employee> sortByFirstName(Direction direction);
 }
