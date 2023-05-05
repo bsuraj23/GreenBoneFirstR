@@ -1,21 +1,32 @@
 package com.example.GreenBone.SimpleCompany.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
-import org.hibernate.annotations.Table;
+import jakarta.persistence.*;
+
+
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
+import java.util.Optional;
+
 @Entity
-@Table(name = "computers")
+@Getter
+@Setter
 public class Computer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String macAddress;
+    private String name;
+    private String ipAddress;
+    private String employeeAbbreviation;
+    private String description;
+    @jakarta.persistence.Id
     private Long id;
-    private String make;
-    private String model;
-    private String serialNumber;
+    private String computerName;
 
-    // constructors, getters and setters
+    public void setEmployee(Optional<Employee> employee) {
+    }
+
+
+    // getters and setters
 }
-

@@ -1,40 +1,40 @@
 package com.example.GreenBone.SimpleCompany.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 
-import org.hibernate.annotations.ColumnDefault;
+import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "employee")
+@Table(name = "employees")
 public class Employee {
-
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id")
-    @ColumnDefault("1")
-    private int employeeId;
+    private Long id;
 
-    @Column(name = "first_name")
+    @Column(nullable = false, unique = true)
+    private String abbreviation;
+
     private String firstName;
-
-    @Column(name = "last_name")
     private String lastName;
-
-    @Column(name = "email")
     private String email;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public List<Computer> getComputers() {
+        return null;
+    }
+
+    public Object getAbbreviation() {
+        return null;
+    }
+
+    // constructors, getters and setters
 }

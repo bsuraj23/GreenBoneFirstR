@@ -1,6 +1,6 @@
 package com.example.GreenBone.SimpleCompany.service;
 
-import employeeManagement.entity.Employee;
+import com.example.GreenBone.SimpleCompany.model.Employee;
 import org.springframework.data.domain.Sort.Direction;
 
 import java.util.List;
@@ -18,4 +18,8 @@ public interface EmployeeService {
 	public Employee findByFirstName(String firstName);
 
 	public List<Employee> sortByFirstName(Direction direction);
+
+    Employee getEmployeeByAbbreviation(String abbreviation);
+
+    void updateEmployee(Long id, Employee employee);
 }
