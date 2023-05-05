@@ -54,7 +54,7 @@ public class ComputerController {
         return computerService.updateComputer(id, computer);
     }
 
-    //administrator wants to be able to remove a computer from an employee
+    //admidnistrator wants to be able to remove a computer from an employee
     @DeleteMapping("/{id}")
     public void deleteComputer(@PathVariable Long id) throws ResourceNotFoundException {
         computerService.deleteComputer(id);
