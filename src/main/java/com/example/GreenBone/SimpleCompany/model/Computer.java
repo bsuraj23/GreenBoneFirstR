@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.Id;
 
 import java.util.Optional;
@@ -13,20 +14,38 @@ import java.util.Optional;
 @Entity
 @Getter
 @Setter
+@Table(name = "computers")
 public class Computer {
-    @Id
-    private String macAddress;
-    private String name;
-    private String ipAddress;
-    private String employeeAbbreviation;
-    private String description;
     @jakarta.persistence.Id
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Column(unique = true)
+    private String macAddress;
+
+    @NotNull
     private String computerName;
 
-    public void setEmployee(Optional<Employee> employee) {
+    @NotNull
+    private String ipAddress;
+
+    private String employeeAbbreviation;
+
+    private String description;
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    public Long getId() {
+        return id;
+    }
 
-    // getters and setters
+    public String getMacAddress() {
+        return null;
+    }
+
+    // constructors, getters and setters
 }
